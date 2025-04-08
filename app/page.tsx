@@ -1,10 +1,12 @@
 import React from "react";
 import "./globals.css";
+import Wrapper from "./components/Wrapper";
 
 export default function Home() {
   return (
-    <div>
-      <button className="btn btn-accent">View</button>
-    </div>
-  );
+    <Wrapper>
+      <p>test</p>
+    </Wrapper>
+  )
 }
+
