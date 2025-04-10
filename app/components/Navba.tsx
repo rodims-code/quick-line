@@ -1,17 +1,20 @@
 "use client"
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {UserButton, useUser} from '@clerk/nextjs'
-import { AudioWaveform, Menu, X } from "lucide-react";
-import { checkAndUser } from "../action";
+import { AudioWaveform, GlobeLock, Menu, X } from "lucide-react";
+import { checkAndUser, getCompanyName } from "../action";
 
 const Navbar = () => {
     const {user} = useUser()
     const email = user?.primaryEmailAddress?.emailAddress
     const [menuOpen, setMenuOpen] = React.useState(false)
+    const [pageName, setPageName] = useState<string | null>(null)
 
     const navLinks = [
         {href: '/', label: 'Accueil'},
+        {href: '/services', label: 'Vos services'},
+
 
     ]
 
@@ -21,6 +24,12 @@ const Navbar = () => {
                 /// eslint-disable-next-line react/jsx-key
                 <Link href = {href} key={href} className={`${classNames} btn-sm`}>{label}</Link>
             ))}
+
+            {pageName && (
+                <Link href = {`/page${pageName}`}  className={`${classNames} btn-sm`}>
+                    <GlobeLock className="w-4 h-4"/>
+                </Link>
+            )}
         </>
     )
 
@@ -28,6 +37,8 @@ const Navbar = () => {
         const init = async () => {
             if(email && user.fullName){
                 await checkAndUser(email, user.fullName)
+                const pageNmae = await getCompanyName(email)
+                setPageName(pageNmae)
             }
         }
         init()
@@ -55,7 +66,7 @@ const Navbar = () => {
                 </div>
             </div>
 
-            <div className={`absolute top-0 w-full bg-base-100 h-screen flex flex-col gap-2 p-4 transition-all duration-3000 sm:hidden z-50 ${menuOpen ? "left-0" : "-left-full"}`}>
+            <div className={`absolute top-0 w-full bg-base-100 h-screen flex flex-col gap-2 p-4 transition-all duration-300 sm:hidden z-50 ${menuOpen ? "left-0" : "-left-full"}`}>
                 <div className="flex  justify-between">
                     <UserButton/>
                     <button className="btn w-flit btn-sm sm:hidden"  onClick={() => setMenuOpen(!menuOpen)}>
