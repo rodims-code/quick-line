@@ -4,7 +4,7 @@ import Wrapper from "../components/Wrapper";
 import { useUser } from "@clerk/nextjs";
 import { createServices, deleteService, getServicesByEmail } from "../action";
 import { Service } from "@prisma/client";
-import { Clock10, Trash } from "lucide-react";
+import { Clock10, ClockArrowUp, Trash } from "lucide-react";
 
 const Page = () => {
     const {user} = useUser()
@@ -80,7 +80,7 @@ const Page = () => {
 
                     <span>Temps moyen du service</span>
                     <label className="input input-bordered flex items-center input-sm gap-2 w-full">
-                       Temps moyen
+                        <ClockArrowUp className="h-4 w-4" />
                         <input 
                             type="number" 
                             className="grow" 

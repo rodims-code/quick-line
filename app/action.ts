@@ -115,3 +115,20 @@ export async function getCompanyName(email : string){
         console.error(error)
     }
 }
+
+export async function setCompanyName(email : string, pageName:string){
+    try{    
+        const company = await prisma.company.findUnique({
+            where : {
+                email : email
+            }
+        })
+        await prisma.company.update({
+            where : {email},
+            data : {pageName}
+        })
+    }catch(error){
+        console.error(error)
+    }
+
+}
