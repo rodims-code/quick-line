@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { createServices, deleteService, getServicesByEmail } from "../action";
 import { Service } from "@prisma/client";
 import { Clock10, ClockArrowUp, Trash } from "lucide-react";
+import EmptyState from "../components/EmptyState";
 
 const Page = () => {
     const {user} = useUser()
@@ -78,7 +79,7 @@ const Page = () => {
                         />
                     </div>
 
-                    <span>Temps moyen du service</span>
+                    <span>Temps moyen du service en minute</span>
                     <label className="input input-bordered flex items-center input-sm gap-2 w-full">
                         <ClockArrowUp className="h-4 w-4" />
                         <input 
@@ -105,7 +106,11 @@ const Page = () => {
                         </div>
                     ): services.length === 0 ? (
                         <div>
-
+                            <EmptyState 
+                            message={'Aucun service pour  le moment'} 
+                            IconComponent="Telescope"
+                            sm={false}
+                            />
                         </div>
                     ) : (
                         <div>

@@ -132,3 +132,59 @@ export async function setCompanyName(email : string, pageName:string){
     }
 
 }
+
+export async function getServicesByPageName(pageName : string) {
+    try{
+        const company = await prisma.company.findUnique({
+            where : {
+                pageName : pageName
+            }
+        })
+
+        if(!company){
+            throw new Error(`Company not found with pageName : ${pageName}`)
+        }
+
+
+        const services = await prisma.service.findMany({
+            where : {companyId : company?.id},
+            include : {
+                company : true
+            }
+        })
+        return services
+    }catch(error){
+        console.error(error)
+    }
+}
+
+export async function createTicket(serviceId : string, nameComplete : string, pageName : string){
+    try{
+        const company = await prisma.company.findUnique({
+            where : {
+                pageName : pageName
+            }
+        })
+
+        if(!company){
+            throw new Error(`Company not found with pageName : ${pageName}`)
+        }
+
+        //A05 ? A08 A774Cv
+        const ticketNum = `A${Math.floor(Math.random() * 10000)}`
+        const tiket = await prisma.ticket.create({
+            data : {
+                serviceId,
+                nameComplete,
+                num :  ticketNum,
+                status : "PENDING"
+            }
+        })
+
+        return ticketNum
+            
+       
+    }catch(error){
+        console.error(error)
+    }
+}
